@@ -101,7 +101,7 @@ export const Vision = () => {
               </h2>
               
               <p className="text-muted-foreground text-xl leading-relaxed mb-12 max-w-xl">
-                We believe the next era of innovation isn't just about faster chips or larger models—it's about the seamless integration of technology into the human experience.
+                We believe the next era of innovation isn&apos;t just about faster chips or larger models—it&apos;s about the seamless integration of technology into the human experience.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { 
   Zap, 
@@ -92,7 +92,7 @@ export const Solutions = () => {
               Pioneering the <span className="text-white">Future</span> of Digital Architecture.
             </h3>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              We don't just build software; we engineer ecosystems. Our suite of modular solutions is designed to scale with your ambition.
+              We don&apos;t just build software; we engineer ecosystems. Our suite of modular solutions is designed to scale with your ambition.
             </p>
           </motion.div>
         </div>
@@ -105,7 +105,7 @@ export const Solutions = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {solutions.map((solution, index) => (
-            <motion.div key={index} variants={cardVariants}>
+            <motion.div key={index} variants={cardVariants as Variants}>
               <GlassCard className="h-full group hover:bg-white/5 border-white/5 transition-all duration-500 hover:-translate-y-2">
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                   <solution.icon className="w-7 h-7 text-white" />
@@ -137,7 +137,7 @@ export const Solutions = () => {
         >
           <div className="mb-8 md:mb-0">
             <h4 className="text-2xl font-bold mb-2">Ready to evolve?</h4>
-            <p className="text-muted-foreground">Let's build the next generation of your platform together.</p>
+            <p className="text-muted-foreground">Let&apos;s build the next generation of your platform together.</p>
           </div>
           <button className="whitespace-nowrap bg-white text-black hover:bg-primary hover:text-white px-8 py-4 rounded-full font-bold transition-all hover:scale-105 active:scale-95">
             Get a Quote
