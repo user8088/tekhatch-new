@@ -20,6 +20,7 @@ export const Hero = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
+        delayChildren: 0.1,
       },
     },
   };
@@ -29,7 +30,6 @@ export const Hero = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
