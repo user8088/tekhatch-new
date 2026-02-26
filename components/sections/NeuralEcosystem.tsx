@@ -27,6 +27,14 @@ export const NeuralEcosystem = () => {
   const yNodes = useTransform(scrollYProgress, [0, 1], [-100, 100]);
   const yNodesReverse = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
+  const particles = Array.from({ length: 20 }, (_, i) => ({
+    top: `${(i * 13) % 100}%`,
+    left: `${(i * 29) % 100}%`,
+    xOffset: ((i % 4) - 1.5) * 40,
+    yOffset: ((i % 3) - 1) * 40,
+    duration: 6 + (i % 5),
+  }));
+
   const nodes = [
     { icon: Database, label: "Core Data", x: "-25%", y: "-30%", delay: 0 },
     { icon: Cpu, label: "Neural Engine", x: "25%", y: "-35%", delay: 0.2 },
@@ -40,25 +48,25 @@ export const NeuralEcosystem = () => {
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(249,115,22,0.05)_0%,_transparent_60%)]" />
         {/* Abstract floating particles (simplified) */}
-        {[...Array(20)].map((_, i) => (
+        {particles.map((particle, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0 }}
             animate={{ 
               opacity: [0.1, 0.3, 0.1],
               scale: [1, 1.2, 1],
-              x: Math.random() * 200 - 100,
-              y: Math.random() * 200 - 100
+              x: [0, particle.xOffset, 0],
+              y: [0, particle.yOffset, 0],
             }}
             transition={{ 
-              duration: Math.random() * 5 + 5, 
+              duration: particle.duration, 
               repeat: Infinity,
-              ease: "linear" 
+              ease: "linear",
             }}
             className="absolute w-1 h-1 bg-white rounded-full"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
+              top: particle.top,
+              left: particle.left,
             }}
           />
         ))}
@@ -72,12 +80,12 @@ export const NeuralEcosystem = () => {
           viewport={{ once: true }}
           className="text-center mb-32 max-w-2xl"
         >
-          <h2 className="text-primary font-bold tracking-[0.4em] text-xs uppercase mb-6">The Infrastructure</h2>
-          <h3 className="text-4xl md:text-7xl font-bold mb-8 tracking-tight">
+          <h2 className="text-primary font-semibold tracking-[0.35em] text-[0.7rem] uppercase mb-6">The Infrastructure</h2>
+          <h3 className="text-3xl md:text-5xl font-semibold mb-8 tracking-tight">
             A Living <span className="text-gradient">Neural Core</span>.
           </h3>
           <p className="text-muted-foreground text-lg opacity-60 leading-relaxed">
-            Our ecosystem isn't static. It's an evolving network of interconnected intelligence, breathing in data and exhaling insight.
+            Our ecosystem isn&apos;t static. It&apos;s an evolving network of interconnected intelligence, breathing in data and exhaling insight.
           </p>
         </motion.div>
 
@@ -125,7 +133,7 @@ export const NeuralEcosystem = () => {
               
               {/* Connecting Lines (Simulated with div) */}
               <div className="absolute top-1/2 left-1/2 -z-10 w-[200px] h-[1px] bg-gradient-to-r from-primary/40 to-transparent origin-left -translate-y-1/2 rotate-[var(--line-angle)] opacity-20 pointer-events-none" 
-                   style={{ '--line-angle': i % 2 === 0 ? '45deg' : '-135deg' } as any} />
+                   style={{ '--line-angle': i % 2 === 0 ? '45deg' : '-135deg' } as React.CSSProperties} />
             </motion.div>
           ))}
 

@@ -59,9 +59,9 @@ export const Hero = () => {
       >
         <motion.h1 
           variants={itemVariants}
-          className="text-5xl md:text-8xl font-bold tracking-tight mb-8"
+          className="text-4xl md:text-6xl font-semibold tracking-tight mb-8"
         >
-          Tekhatch: <span className="text-white">Innovate.</span> <span className="text-muted">Evolve.</span> <span className="text-white">Thrive.</span>
+          Tekhatch: <br /> <span className="text-white">Innovate.</span> <span className="text-muted">Evolve.</span> <span className="text-white">Thrive.</span>
         </motion.h1>
 
         <motion.div variants={itemVariants} className="flex flex-col items-center gap-6">
@@ -109,7 +109,7 @@ export const Hero = () => {
                   <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Cpu className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold tracking-tight">AI-Powered Solutions</h3>
+                  <h3 className="text-lg font-semibold tracking-tight">AI-Powered Solutions</h3>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed pl-16">
                   Leveraging advanced neural networks to solve complex business challenges with precision and speed.
@@ -127,7 +127,7 @@ export const Hero = () => {
                   <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Rocket className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold tracking-tight">Cutting-Edge Research</h3>
+                  <h3 className="text-lg font-semibold tracking-tight">Cutting-Edge Research</h3>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed pl-16">
                   Pushing the boundaries of technology through constant experimentation and breakthrough methodologies.
@@ -145,7 +145,7 @@ export const Hero = () => {
                   <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Users className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold tracking-tight">Strategic Partnerships</h3>
+                  <h3 className="text-lg font-semibold tracking-tight">Strategic Partnerships</h3>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed pl-16">
                   Building long-term value through collaborative ecosystems and shared technological excellence.

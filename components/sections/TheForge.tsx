@@ -43,11 +43,11 @@ export const TheForge = () => {
   return (
     <section ref={containerRef} className="relative py-48 overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col items-center mb-32">
+        <div className="flex flex-col items-center mb-24">
           <motion.h2 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            className="text-4xl md:text-6xl font-bold text-center tracking-tight"
+            className="text-3xl md:text-5xl font-semibold text-center tracking-tight"
           >
             The <span className="text-white">Forge</span> of <span className="text-gradient">Excellence</span>
           </motion.h2>
@@ -77,7 +77,7 @@ export const TheForge = () => {
                 <div className={`absolute -top-24 -left-24 w-48 h-48 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-20 blur-[60px] transition-opacity duration-700`} />
                 
                 {/* Step Number */}
-                <span className="absolute top-4 right-6 text-4xl font-black text-white/5 group-hover:text-white/10 transition-colors">
+                <span className="absolute top-4 right-6 text-3xl font-semibold text-white/5 group-hover:text-white/10 transition-colors">
                   0{i + 1}
                 </span>
 
@@ -85,7 +85,7 @@ export const TheForge = () => {
                   <step.icon className="w-10 h-10 text-white" />
                 </div>
 
-                <h4 className="text-2xl font-bold mb-4">{step.title}</h4>
+                <h4 className="text-xl font-semibold mb-4">{step.title}</h4>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6 opacity-60 group-hover:opacity-100 transition-opacity">
                   {step.desc}
                 </p>

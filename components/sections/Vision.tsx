@@ -93,10 +93,10 @@ export const Vision = () => {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-[1px] bg-primary" />
-                <span className="text-primary font-bold tracking-[0.3em] text-xs uppercase">The Vision</span>
+                <span className="text-primary font-semibold tracking-[0.25em] text-[0.65rem] uppercase">The Vision</span>
               </div>
               
-              <h2 className="text-4xl md:text-7xl font-bold leading-[1.1] mb-8">
+              <h2 className="text-3xl md:text-5xl font-semibold leading-[1.15] mb-8">
                 Synthesizing <span className="text-gradient">Human Insight</span> with Machine Precision.
               </h2>
               
@@ -109,7 +109,7 @@ export const Vision = () => {
                   <div className="w-12 h-12 rounded-xl glass flex items-center justify-center">
                     <Sparkles className="w-6 h-6 text-primary" />
                   </div>
-                  <h4 className="text-xl font-bold">Neural Harmony</h4>
+                  <h4 className="text-lg font-semibold">Neural Harmony</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Algorithms that learn and adapt to individual user intent, creating personalized digital shadows.
                   </p>
@@ -118,7 +118,7 @@ export const Vision = () => {
                   <div className="w-12 h-12 rounded-xl glass flex items-center justify-center">
                     <Zap className="w-6 h-6 text-secondary" />
                   </div>
-                  <h4 className="text-xl font-bold">Infinite Compute</h4>
+                  <h4 className="text-lg font-semibold">Infinite Compute</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Elastic infrastructure that breathes with your demand, ensuring zero-latency world-wide.
                   </p>

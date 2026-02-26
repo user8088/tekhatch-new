@@ -85,10 +85,10 @@ export const Solutions = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-primary font-bold tracking-widest text-sm uppercase mb-4">
+            <h2 className="text-primary font-semibold tracking-[0.3em] text-xs uppercase mb-4">
               Our Capabilities
             </h2>
-            <h3 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+            <h3 className="text-3xl md:text-5xl font-semibold tracking-tight mb-8">
               Pioneering the <span className="text-white">Future</span> of Digital Architecture.
             </h3>
             <p className="text-muted-foreground text-lg leading-relaxed">
@@ -110,7 +110,7 @@ export const Solutions = () => {
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                   <solution.icon className="w-7 h-7 text-white" />
                 </div>
-                <h4 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
+                <h4 className="text-xl font-semibold mb-4 group-hover:text-primary transition-colors">
                   {solution.title}
                 </h4>
                 <p className="text-muted-foreground leading-relaxed">
@@ -136,7 +136,7 @@ export const Solutions = () => {
           className="mt-24 flex flex-col md:flex-row items-center justify-between glass p-8 md:p-12 rounded-3xl"
         >
           <div className="mb-8 md:mb-0">
-            <h4 className="text-2xl font-bold mb-2">Ready to evolve?</h4>
+            <h4 className="text-xl font-semibold mb-2">Ready to evolve?</h4>
             <p className="text-muted-foreground">Let&apos;s build the next generation of your platform together.</p>
           </div>
           <button className="whitespace-nowrap bg-white text-black hover:bg-primary hover:text-white px-8 py-4 rounded-full font-bold transition-all hover:scale-105 active:scale-95">
