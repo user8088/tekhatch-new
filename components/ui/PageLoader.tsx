@@ -50,11 +50,11 @@ export function PageLoader() {
         duration: 0.6,
         ease: "power2.inOut",
       })
-      .to(
-        ".loader-wrap",
-        { zIndex: -1, display: "none" },
-        { duration: 0 }
-      );
+      .to({}, {
+        duration: 0,
+        zIndex: -1,
+        display: "none",
+      });
 
     const timer = setTimeout(() => setHidden(true), 2000);
     return () => clearTimeout(timer);
