@@ -1,18 +1,18 @@
- "use client";
+"use client";
 
-import { GlassCard } from "@/components/ui/GlassCard";
-import { XCircle, CheckCircle, ArrowRight } from "lucide-react";
-import { FadeAnim } from "@/components/ui/FadeAnim";
+import { useRef } from "react";
+import { useTick } from "@/lib/stage";
+import { clamp } from "@/lib/utils";
 
 const problems = [
   "6+ month development cycles burning runway",
   "Unreliable freelancers with broken code",
-  "Technical debt costing 10x more later",
+  "Technical debt costing 10× more later",
   "Missing AI features competitors have",
   "Amateur-looking products",
 ];
 
-const solutions = [
+const fixes = [
   "Milestone-based delivery & payment",
   "AI-powered development included",
   "8-week MVP delivery guaranteed",
@@ -20,112 +20,95 @@ const solutions = [
   "30-day post-launch guarantee",
 ];
 
+const panel = "flex flex-col p-[clamp(28px,4vw,56px)]";
+const heading = "mb-6 flex font-mono text-xs uppercase tracking-[0.14em]";
+const row =
+  "whitespace-nowrap border-t py-[clamp(14px,2vh,22px)] font-display text-[clamp(16px,2.1vw,32px)] tracking-[-0.03em]";
+
+/** Before/after panel: the pointer drags a divider between life without and with Tekhatch. */
 export const WhyTekhatch = () => {
+  const withRef = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
+  const split = useRef({ current: 50, target: 50 });
+
+  const onPointer = (e: React.PointerEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    split.current.target = clamp(((e.clientX - r.left) / r.width) * 100, 4, 96);
+  };
+
+  useTick(() => {
+    if (!withRef.current || !handleRef.current) return;
+    const s = split.current;
+    s.current += (s.target - s.current) * 0.12;
+    withRef.current.style.clipPath = `inset(0 ${100 - s.current}% 0 0)`;
+    handleRef.current.style.left = `${s.current}%`;
+  });
+
   return (
-    <section id="contact" className="relative py-28 overflow-hidden bg-background">
-      {/* Ambient background accents */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-primary/10 blur-[140px] opacity-70 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-secondary/10 blur-[160px] opacity-60 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.9)_0%,_transparent_55%)]" />
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section heading */}
-        <FadeAnim delay={0.2} className="max-w-3xl mx-auto text-center mb-16">
-          <p className="text-primary font-semibold tracking-[0.25em] text-[0.7rem] uppercase mb-4">
-            Why Startups Choose Tekhatch
-          </p>
-          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4">
-            Built for founders who can&apos;t afford to miss.
+    <section
+      id="why"
+      data-morph="0"
+      data-glow="0.3"
+      className="relative z-2 px-gutter py-[clamp(80px,12vh,140px)]"
+    >
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-12">
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <h2 className="font-display text-[clamp(32px,4.6vw,76px)] font-medium leading-[1.02] tracking-[-0.045em]">
+            <div data-mask="" className="overflow-hidden">
+              <div>Built for founders</div>
+            </div>
+            <div data-mask="" className="overflow-hidden">
+              <div>
+                who can&apos;t afford <span className="text-primary">to miss.</span>
+              </div>
+            </div>
           </h2>
-          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-            Stop burning the runway on delays, rewrites, and broken promises. Tekhatch delivers
-            production-ready web and mobile products with battle-tested engineering and built‑in AI
-            that investors love to see.
+          <p data-reveal="" className="max-w-[360px] text-[15px] leading-normal text-[#9AA0A8]">
+            Move across the panel to compare. Left of the line is how it goes
+            with Tekhatch.
           </p>
-        </FadeAnim>
+        </div>
 
-        {/* Comparison grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-8 max-w-5xl mx-auto">
-          {/* Problems column */}
-          <FadeAnim delay={0.1} fadeFrom="left">
-            <GlassCard className="relative h-full overflow-hidden border-red-500/40 bg-gradient-to-b from-red-500/10 via-black/40 to-black/60">
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-400 via-red-500 to-red-400" />
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-9 h-9 rounded-full bg-red-500/15 flex items-center justify-center border border-red-400/40">
-                  <XCircle className="w-5 h-5 text-red-400" />
-                </div>
-                <div>
-                  <p className="text-[0.7rem] tracking-[0.25em] uppercase text-red-300/70">
-                    Problems
-                  </p>
-                  <h3 className="text-lg md:text-xl font-semibold">
-                    The Startup Development Problem
-                  </h3>
-                </div>
+        <div
+          onPointerMove={onPointer}
+          onPointerDown={onPointer}
+          className="relative touch-pan-y select-none overflow-hidden rounded-[28px] border border-white/12 bg-panel-deep"
+        >
+          <div className={panel}>
+            <div className={`${heading} justify-end text-[#7C828B]`}>Without Tekhatch</div>
+            {problems.map((problem) => (
+              <div
+                key={problem}
+                className={`${row} border-white/7 text-[#5E646D] line-through decoration-[rgba(229,72,77,0.7)] decoration-2`}
+              >
+                {problem}
               </div>
+            ))}
+          </div>
 
-              <ul className="space-y-4">
-                {problems.map((item, idx) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1">
-                      <XCircle className="w-4 h-4 text-red-400" />
-                    </span>
-                    <span className="text-sm text-muted-foreground leading-relaxed">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </GlassCard>
-          </FadeAnim>
-
-          {/* Solutions column */}
-          <FadeAnim delay={0.2} fadeFrom="right">
-            <GlassCard className="relative h-full overflow-hidden border-emerald-400/40 bg-gradient-to-b from-emerald-400/10 via-black/40 to-black/60">
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-400" />
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-9 h-9 rounded-full bg-emerald-400/15 flex items-center justify-center border border-emerald-300/50">
-                  <CheckCircle className="w-5 h-5 text-emerald-300" />
-                </div>
-                <div>
-                  <p className="text-[0.7rem] tracking-[0.25em] uppercase text-emerald-200/80">
-                    Solutions
-                  </p>
-                  <h3 className="text-lg md:text-xl font-semibold">
-                    The Tekhatch Solution
-                  </h3>
-                </div>
+          <div
+            ref={withRef}
+            className={`${panel} absolute inset-0 bg-[linear-gradient(120deg,#1A0F08,#0B0C10_70%)]`}
+            style={{ clipPath: "inset(0 50% 0 0)" }}
+          >
+            <div className={`${heading} justify-start text-primary`}>With Tekhatch</div>
+            {fixes.map((fix) => (
+              <div key={fix} className={`${row} border-primary/18 text-foreground`}>
+                {fix}
               </div>
+            ))}
+          </div>
 
-              <ul className="space-y-4">
-                {solutions.map((item, idx) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1">
-                      <CheckCircle className="w-4 h-4 text-emerald-300" />
-                    </span>
-                    <span className="text-sm text-muted-foreground leading-relaxed">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-8 pt-5 border-t border-white/10 flex items-center justify-between text-xs md:text-sm">
-                <span className="text-white/70 font-medium">
-                  Confident delivery from idea to launch.
-                </span>
-                <span className="inline-flex items-center gap-1 text-primary font-semibold">
-                  See how we work
-                  <ArrowRight className="w-3 h-3" />
-                </span>
-              </div>
-            </GlassCard>
-          </FadeAnim>
+          <div
+            ref={handleRef}
+            className="pointer-events-none absolute inset-y-0 left-1/2 -ml-px w-0.5 bg-primary shadow-[0_0_24px_rgba(249,115,22,0.7)]"
+          >
+            <div className="absolute left-1/2 top-1/2 -ml-[26px] -mt-[26px] flex size-[52px] items-center justify-center rounded-full bg-primary text-lg font-semibold text-background">
+              ⟷
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
-

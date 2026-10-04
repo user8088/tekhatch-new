@@ -1,186 +1,100 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { 
-  Cpu, 
-  Rocket, 
-  Users, 
-  ChevronLeft, 
-  ChevronRight, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin 
-} from "lucide-react";
+import { useEffect, useRef } from "react";
+import { stage, useTick } from "@/lib/stage";
+import { clamp } from "@/lib/utils";
+import { Pill } from "@/components/ui/Pill";
 
 export const Hero = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const dragX = useRef<number | null>(null);
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
-  };
+  // Dragging anywhere on the hero spins the hatch
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      if (dragX.current === null) return;
+      stage.twistVel = (e.clientX - dragX.current) * 0.006;
+      dragX.current = e.clientX;
+    };
+    const onUp = () => {
+      dragX.current = null;
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, []);
+
+  useTick(() => {
+    const heading = headingRef.current;
+    const y = window.scrollY, vh = window.innerHeight;
+    if (!heading || y >= vh * 1.5) return;
+    heading.style.transform = `translateY(${y * 0.35}px)`;
+    heading.style.opacity = String(clamp(1 - y / (vh * 0.9)));
+  });
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-between pt-32 overflow-hidden">
-      {/* Background Video */}
-      <div className="absolute inset-0 -z-10 bg-[#0A0A0A]">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/assets/videos/bg-vid.mp4" type="video/mp4" />
-        </video>
-        {/* Adjusted gradient for better contrast with bottom section */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0A]/20 to-[#0A0A0A]" />
+    <section
+      id="top"
+      data-morph="0"
+      data-glow="1"
+      onPointerDown={(e) => {
+        dragX.current = e.clientX;
+      }}
+      className="relative z-2 flex min-h-screen touch-pan-y select-none flex-col justify-end px-gutter pb-9 pt-[120px]"
+    >
+      <div className="mb-[clamp(24px,4vh,48px)] flex flex-wrap items-end justify-between gap-6">
+        <Pill data-hero="" className="bg-[rgba(6,7,10,0.4)]">
+          AI-native product studio · since 2020
+        </Pill>
+        <p data-hero="" className="max-w-[380px] text-[17px] leading-normal text-[#B9BDC4] text-pretty">
+          Production-ready web, mobile and AI products — from first sketch to
+          investor-ready in eight weeks.
+        </p>
       </div>
 
-      {/* Main Content Area */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="container mx-auto px-6 text-center z-10 flex-grow flex flex-col items-center justify-center"
+      <h1
+        ref={headingRef}
+        className="text-[clamp(64px,14.5vw,260px)] font-semibold leading-[0.84] tracking-[-0.065em] will-change-transform"
       >
-        <motion.h1 
-          variants={itemVariants}
-          className="text-4xl md:text-6xl font-semibold tracking-tight mb-8"
-        >
-          Tekhatch: <br /> <span className="text-white">Innovate.</span> <span className="text-muted">Evolve.</span> <span className="text-white">Thrive.</span>
-        </motion.h1>
-
-        <motion.div variants={itemVariants} className="flex flex-col items-center gap-6">
-          <button className="bg-primary/90 hover:bg-primary text-white px-10 py-4 rounded-full text-lg font-bold shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all hover:scale-105 active:scale-95">
-            Get Started
-          </button>
-          
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center">
-              <div className="w-1 h-1 bg-white rounded-full animate-bounce" />
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Side Navigation Buttons */}
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-4 z-20">
-        <button className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/20 transition-colors">
-          <ChevronLeft className="w-5 h-5 text-white/70" />
-        </button>
-      </div>
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-4 z-20">
-        <button className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-white/20 transition-colors">
-          <ChevronRight className="w-5 h-5 text-white/70" />
-        </button>
-      </div>
-
-      {/* Bottom Section: Feature Cards & Footer */}
-      <div className="w-full z-10">
-        {/* Divider Line */}
-        <div className="w-full h-[1px] bg-white/10" />
-        
-        {/* Features Panel */}
-        <div className="glass-dark backdrop-blur-3xl py-12 border-t border-white/5">
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="container mx-auto px-6"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
-              {/* Card 1 */}
-              <motion.div variants={itemVariants} className="flex flex-col gap-4 group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Cpu className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold tracking-tight">AI-Powered Solutions</h3>
-                </div>
-                <p className="text-muted-foreground text-sm leading-relaxed pl-16">
-                  Leveraging advanced neural networks to solve complex business challenges with precision and speed.
-                </p>
-                <div className="pl-16">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[10px] opacity-40 group-hover:opacity-100 group-hover:border-primary/50 transition-all">
-                    AI
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Card 2 */}
-              <motion.div variants={itemVariants} className="flex flex-col gap-4 group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Rocket className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold tracking-tight">Cutting-Edge Research</h3>
-                </div>
-                <p className="text-muted-foreground text-sm leading-relaxed pl-16">
-                  Pushing the boundaries of technology through constant experimentation and breakthrough methodologies.
-                </p>
-                <div className="pl-16">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[10px] opacity-40 group-hover:opacity-100 group-hover:border-primary/50 transition-all">
-                    RD
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Card 3 */}
-              <motion.div variants={itemVariants} className="flex flex-col gap-4 group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold tracking-tight">Strategic Partnerships</h3>
-                </div>
-                <p className="text-muted-foreground text-sm leading-relaxed pl-16">
-                  Building long-term value through collaborative ecosystems and shared technological excellence.
-                </p>
-                <div className="pl-16">
-                  <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[10px] opacity-40 group-hover:opacity-100 group-hover:border-primary/50 transition-all">
-                    SP
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
+        <div data-mask="" className="overflow-hidden pb-[0.04em]">
+          <div>Innovate.</div>
         </div>
-
-        {/* Final Bottom Bar */}
-        <div className="w-full bg-black/60 py-5 px-12 border-t border-white/5">
-          <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase flex gap-4 overflow-hidden whitespace-nowrap opacity-60">
-              <span>Innovation</span> <span>•</span>
-              <span>Evolution</span> <span>•</span>
-              <span>Growth</span> <span>•</span>
-              <span>Technology</span> <span>•</span>
-              <span>Creative</span> <span>•</span>
-              <span>Future</span> <span>•</span>
-              <span>Design</span>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 flex items-center justify-center transition-all hover:-translate-y-0.5">
-                  <Icon className="w-4 h-4 text-white/60" />
-                </a>
-              ))}
-            </div>
+        <div data-mask="" className="flex justify-end overflow-hidden pb-[0.04em]">
+          <div className="text-transparent [-webkit-text-stroke:1.5px_#ECECE8]">Evolve.</div>
+        </div>
+        <div data-mask="" className="overflow-hidden pb-[0.06em]">
+          <div>
+            Thrive<span className="text-primary">.</span>
           </div>
+        </div>
+      </h1>
+
+      <div className="mt-7 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-5">
+        <div data-hero="" className="flex flex-wrap gap-2.5">
+          <a
+            href="#hatch"
+            className="flex items-center gap-3 rounded-full bg-primary px-6 py-4 text-[15px] font-medium text-background hover:bg-[#FB8A3C]"
+          >
+            Get started →
+          </a>
+          <a
+            href="#work"
+            className="flex items-center rounded-full border border-white/20 px-6 py-4 text-[15px] hover:text-primary"
+          >
+            Explore work
+          </a>
+        </div>
+        <div
+          data-hero=""
+          className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.12em] text-[#8A9099]"
+        >
+          <span className="flex size-[34px] items-center justify-center rounded-full border border-white/20 text-sm">
+            ⟲
+          </span>
+          Drag to turn the hatch
         </div>
       </div>
     </section>

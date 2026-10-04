@@ -1,101 +1,88 @@
 "use client";
 
-import { Zap, Rocket, Shield, Globe } from "lucide-react";
-import { FadeAnim } from "@/components/ui/FadeAnim";
-import { TextInvert } from "@/components/ui/TextInvert";
+import { useRef } from "react";
+import { useTick } from "@/lib/stage";
+import { clamp, glyphs } from "@/lib/utils";
+import { Pill } from "@/components/ui/Pill";
+
+const aboutText =
+  "We follow a user-centered, iterative process to create impactful digital experiences — research and ideation first, then wireframes, then production-ready applications that scale from 100 to 100K+ users.";
+
+/** Characters of scrambled text at the edge of the scroll-driven reveal. */
+const EDGE = 10;
 
 const stats = [
-  {
-    icon: Zap,
-    label: "8-Week MVP",
-    value: "100",
-    suffix: "%",
-    color: "text-primary",
-  },
-  {
-    icon: Rocket,
-    label: "Projects Shipped",
-    value: "50",
-    suffix: "+",
-    color: "text-secondary",
-  },
-  {
-    icon: Shield,
-    label: "Zero-Latency",
-    value: "99",
-    suffix: ".9%",
-    color: "text-primary",
-  },
-  {
-    icon: Globe,
-    label: "Global Scale",
-    value: "100",
-    suffix: "K",
-    color: "text-secondary",
-  },
+  { label: "8-week MVP delivery", value: 100, suffix: "%", accent: "text-primary" },
+  { label: "Projects shipped", value: 50, suffix: "+", accent: "text-secondary" },
+  { label: "Uptime", value: 99, suffix: ".9%", accent: "text-primary" },
+  { label: "Users at scale", value: 100, suffix: "K", accent: "text-secondary" },
 ];
 
 export const AboutTekhatch = () => {
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const doneRef = useRef<HTMLSpanElement>(null);
+  const edgeRef = useRef<HTMLSpanElement>(null);
+  const restRef = useRef<HTMLSpanElement>(null);
+  const lastKey = useRef("");
+
+  // The paragraph decodes left to right as it scrolls through the viewport
+  useTick((t) => {
+    const text = textRef.current;
+    if (!text || !doneRef.current || !edgeRef.current || !restRef.current) return;
+    const vh = window.innerHeight;
+    const r = text.getBoundingClientRect();
+    const p = clamp((vh * 0.8 - r.top) / (r.height + vh * 0.3));
+    const n = Math.floor(p * aboutText.length);
+    const key = `${n}:${(t * 20) | 0}`;
+    if (key === lastKey.current) return;
+    lastKey.current = key;
+    doneRef.current.textContent = aboutText.slice(0, n);
+    edgeRef.current.textContent = p >= 1 ? "" : glyphs(aboutText.slice(n, n + EDGE));
+    restRef.current.textContent = aboutText.slice(n + EDGE);
+  });
+
   return (
-    <section className="relative py-28 overflow-hidden bg-background">
-      <div className="container mx-auto px-6">
-        <div className="flex justify-center">
-          <div className="max-w-3xl text-center mb-12">
-            <FadeAnim delay={0} className="text-primary font-semibold tracking-[0.25em] text-sm uppercase block mb-4">
-              About Tekhatch
-            </FadeAnim>
-            <TextInvert
-              className="text-2xl md:text-4xl lg:text-3xl font-normal leading-[1.2]"
-              lightColor="#F8FAFC"
-              mutedColor="#64748B"
+    <section
+      id="about"
+      data-morph="1"
+      data-glow="0.5"
+      className="relative z-2 px-gutter pb-[clamp(80px,12vh,140px)] pt-[clamp(120px,20vh,220px)]"
+    >
+      <div className="mx-auto flex max-w-[1280px] flex-col gap-12">
+        <Pill data-reveal="" dot="secondary" className="self-start">
+          About Tekhatch
+        </Pill>
+
+        <p
+          ref={textRef}
+          className="font-display text-[clamp(24px,3.2vw,48px)] leading-tight tracking-[-0.03em] text-pretty"
+        >
+          <span className="sr-only">{aboutText}</span>
+          <span ref={doneRef} aria-hidden="true" />
+          <span ref={edgeRef} aria-hidden="true" className="text-primary" />
+          <span ref={restRef} aria-hidden="true" className="text-foreground/16">
+            {aboutText}
+          </span>
+        </p>
+
+        <div className="mt-10 grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-3">
+          {stats.map((stat, i) => (
+            <div
+              key={stat.label}
+              data-reveal=""
+              data-delay={i * 100}
+              className="flex flex-col gap-7 rounded-[20px] border border-white/8 bg-[rgba(14,16,20,0.72)] p-7 backdrop-blur-[10px]"
             >
-              We follow a user-centered, iterative process to create impactful digital experiences. We start with research & ideation, turning insights into wireframes and production-ready applications that scale from 100 to 100K+ users.
-            </TextInvert>
-          </div>
-        </div>
-
-        {/* Ornamental divider */}
-        <FadeAnim delay={0.2} className="mb-16 overflow-hidden">
-          <svg
-            viewBox="0 0 1320 6"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full max-w-full h-1.5"
-          >
-            <path
-              d="M5 2.5L0 0.113249V5.88675L5 3.5V2.5ZM1315 3.5L1320 5.88675V0.113249L1315 2.5V3.5ZM4.5 3.5H1315.5V2.5H4.5V3.5Z"
-              fill="white"
-              fillOpacity="0.1"
-            />
-          </svg>
-        </FadeAnim>
-
-        {/* Stats row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, i) => {
-            const Icon = stat.icon;
-            return (
-              <FadeAnim
-                key={stat.label}
-                delay={0.1 * i}
-                fadeFrom="bottom"
-                className="flex items-center gap-6"
-              >
-                <span className="shrink-0 w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                  <Icon className={`w-6 h-6 ${stat.color}`} />
-                </span>
-                <div>
-                  <span className="text-foreground font-medium text-sm block">
-                    {stat.label}
-                  </span>
-                  <h3 className="text-3xl md:text-4xl font-semibold text-foreground leading-tight">
-                    {stat.value}
-                    {stat.suffix}
-                  </h3>
-                </div>
-              </FadeAnim>
-            );
-          })}
+              <div className="flex justify-between text-sm text-[#9AA0A8]">
+                <span>{stat.label}</span>
+                <span className={stat.accent}>●</span>
+              </div>
+              <div className="font-display text-[clamp(44px,4.6vw,72px)] font-medium leading-none tracking-[-0.05em] tabular-nums">
+                <span data-count={stat.value}>{stat.value}</span>
+                <span className={stat.accent}>{stat.suffix}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
